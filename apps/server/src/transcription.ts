@@ -210,11 +210,6 @@ const resolveCodexVoiceCredentials = Effect.fn("voiceTranscription.resolveCodexC
   },
 );
 
-export const codexTranscriptionAuthStatus = resolveCodexVoiceCredentials().pipe(
-  Effect.as(true),
-  Effect.catchTag("TranscriptionCodexAuthError", () => Effect.succeed(false)),
-);
-
 const resolveTranscriptionApiKey = Effect.fn("voiceTranscription.resolveApiKey")(function* (
   input: VoiceTranscriptionModelsInput,
 ) {

@@ -12,7 +12,6 @@ export interface VoiceTranscriptionConfig {
 export type VoiceTranscriptionProviderConfig = Omit<VoiceTranscriptionConfig, "model">;
 
 export interface VoiceTranscriptionEnvironmentStatus {
-  readonly codex: boolean;
   readonly openai: boolean;
   readonly groq: boolean;
 }
@@ -50,12 +49,10 @@ export async function readVoiceTranscriptionEnvironmentStatus(): Promise<VoiceTr
   if (!response.ok) throw new Error("Could not read transcription provider settings.");
 
   const payload = (await response.json()) as {
-    readonly codex?: unknown;
     readonly openai?: unknown;
     readonly groq?: unknown;
   };
   return {
-    codex: payload.codex === true,
     openai: payload.openai === true,
     groq: payload.groq === true,
   };

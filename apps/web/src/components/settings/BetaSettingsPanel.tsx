@@ -86,7 +86,6 @@ export function BetaSettingsPanel() {
   );
   const voiceTranscriptionModel = useClientSettings((settings) => settings.voiceTranscriptionModel);
   const [environmentApiKeys, setEnvironmentApiKeys] = useState({
-    codex: false,
     openai: false,
     groq: false,
   });
@@ -116,7 +115,10 @@ export function BetaSettingsPanel() {
       : voiceTranscriptionProvider === "groq"
         ? TRANSCRIPTION_API_KEY_ENV.groq
         : null;
-  const hasEnvironmentApiKey = environmentApiKeys[voiceTranscriptionProvider];
+  const hasEnvironmentApiKey =
+    voiceTranscriptionProvider === "codex"
+      ? false
+      : environmentApiKeys[voiceTranscriptionProvider];
   const hasTranscriptionApiKey =
     isCodexSubscription || voiceTranscriptionApiKey.trim().length > 0 || hasEnvironmentApiKey;
 
@@ -284,21 +286,7 @@ export function BetaSettingsPanel() {
                 </Select>
               }
             />
-            {isCodexSubscription ? (
-              <SettingsRow
-                title="Codex authentication"
-                description={
-                  hasEnvironmentApiKey
-                    ? "Uses the first configured Codex provider with file-based ChatGPT credentials on the connected T3 server."
-                    : "No file-based Codex ChatGPT login was found on the connected T3 server. Run codex login first."
-                }
-                control={
-                  <span className="text-sm text-muted-foreground">
-                    {hasEnvironmentApiKey ? "Connected" : "Unavailable"}
-                  </span>
-                }
-              />
-            ) : (
+            {isCodexSubscription ? null : (
               <>
                 <SettingsRow
                   title={`${transcriptionProviderLabel} API key`}

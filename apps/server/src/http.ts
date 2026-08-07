@@ -41,7 +41,6 @@ import {
 import * as ServerEnvironment from "./environment/ServerEnvironment.ts";
 import { browserApiCorsAllowedHeaders, browserApiCorsAllowedMethods } from "./httpCors.ts";
 import {
-  codexTranscriptionAuthStatus,
   forwardVoiceTranscription,
   listVoiceTranscriptionModels,
   MAX_TRANSCRIPTION_AUDIO_BYTES,
@@ -269,8 +268,7 @@ const transcriptionConfigRouteLayer = HttpRouter.add(
       transcriptionEnvironmentApiKeyStatus("openai"),
       transcriptionEnvironmentApiKeyStatus("groq"),
     ]);
-    const codex = yield* codexTranscriptionAuthStatus;
-    return HttpServerResponse.jsonUnsafe({ codex, openai, groq });
+    return HttpServerResponse.jsonUnsafe({ openai, groq });
   }).pipe(
     Effect.catchTags({
       EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
